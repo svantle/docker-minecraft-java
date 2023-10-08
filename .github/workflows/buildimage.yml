@@ -65,7 +65,6 @@ jobs:
             docker build -t svantle/minecraft-docker-java:${version} .
             docker tag svantle/minecraft-docker-java:${version} svantle/minecraft-docker-java:latest
           done
-        working-directory: ../Dockerfile
 
       - name: Push Docker images to Docker Hub
         run: |
