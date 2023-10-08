@@ -1,0 +1,13 @@
+version: '1'
+services:
+  minecraft:
+    image: svantle/docker-minecraft-java:1.20.2  # Replace with your desired Docker image and tag
+    container_name: minecraft-server
+    ports:
+      - "25565:25565"  # Replace with your desired port mappings
+    environment:
+      - PAPER_VERSION=1.20.2  # Replace with your desired Minecraft version (must match tag of docker image)
+      - MEMORY=2G  # Replace with your desired memory allocation
+    volumes:
+      - /home/docker-minecraft
+    command: ["./start.sh"]
