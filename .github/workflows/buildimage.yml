@@ -1,0 +1,74 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        minecraft_versions:
+          - '1.20.1'
+          - '1.19.4'
+          - '1.19.3'
+          - '1.19.2'
+          - '1.19.1'
+          - '1.19'
+          - '1.18.2'
+          - '1.18.1'
+          - '1.18'
+          - '1.17.1'
+          - '1.17'
+          - '1.16.5'
+          - '1.16.4'
+          - '1.16.3'
+          - '1.16.2'
+          - '1.16.1'
+          - '1.15.2'
+          - '1.15.1'
+          - '1.15'
+          - '1.14.4'
+          - '1.14.3'
+          - '1.14.2'
+          - '1.14.1'
+          - '1.14'
+          - '1.13.2'
+          - '1.13.1'
+          - '1.13'
+          - '1.12.2'
+          - '1.12.1'
+          - '1.12'
+          - '1.11.2'
+          - '1.11'
+          - '1.10.2'
+          - '1.9.4'
+          - '1.9.2'
+          - '1.9'
+          - '1.8.8'
+          - '1.8.3'
+          - '1.8'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and tag Docker image
+        run: |
+          for version in "${{ matrix.minecraft_versions }}"; do
+            docker build -t svantle/minecraft-docker-java:${version} .
+            docker tag svantle/minecraft-docker-java:${version} svantle/minecraft-docker-java:latest
+          done
+        working-directory: ../Dockerfile
+
+      - name: Push Docker images to Docker Hub
+        run: |
+          for version in "${{ matrix.minecraft_versions }}"; do
+            docker push svantle/minecraft-docker-java:${version}
+          done
