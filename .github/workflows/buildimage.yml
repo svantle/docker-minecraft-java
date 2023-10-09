@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      max-parallel: 20
+      fail-fast: false
       matrix:
-        max-parallel: 20  
-        fail-fast: false
         minecraft_versions:
           - '1.20.1'
           - '1.19.4'
@@ -58,8 +58,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Login to GitHub Packages
+        run: echo ${{ secrets.GCHR_TOKEN }} | docker login ghcr.io -u ${{ secrets.GCHR_USERNAME }} --password-stdin
+
       - name: Login to Docker Hub
-        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
       - name: Build and tag Docker image
         run: |
@@ -68,8 +71,11 @@ jobs:
             docker tag svantle/minecraft-docker-java:${version} svantle/minecraft-docker-java:latest
           done
 
-      - name: Push Docker images to Docker Hub
+      - name: Push Docker images to Docker Hub and GitHub Packages
         run: |
           for version in "${{ matrix.minecraft_versions }}"; do
             docker push svantle/minecraft-docker-java:${version}
+            docker push svantle/minecraft-docker-java:latest
+            docker push ghcr.io/svantle/docker-minecraft-java/minecraft-docker-java:${version}
+            docker push ghcr.io/svantle/docker-minecraft-java/minecraft-docker-java:latest
           done
