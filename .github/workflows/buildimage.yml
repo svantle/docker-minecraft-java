@@ -79,11 +79,11 @@ jobs:
           docker logout
           echo ${{ secrets.GCHR_TOKEN }} | docker login ghcr.io -u ${{ secrets.GCHR_USERNAME }} --password-stdin
 
-      - name: Push Docker images to Docker Hub
+      - name: Push Docker images to GitHub Packages
         run: |
           for version in "${{ matrix.minecraft_versions }}"; do
             docker images
-            docker tag svantle/docker-minecraft-java:${version} gchr.io/svantle/docker-minecraft-java:${version}
+            docker tag svantle/docker-minecraft-java:${version} ghcr.io/svantle/docker-minecraft-java:${version}
             docker images
             docker push ghcr.io/svantle/docker-minecraft-java:${version}
           done
