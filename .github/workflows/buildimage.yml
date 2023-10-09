@@ -76,6 +76,6 @@ jobs:
           for version in "${{ matrix.minecraft_versions }}"; do
             docker push svantle/docker-minecraft-java:${version}
             docker push svantle/docker-minecraft-java:latest
-            docker push ghcr.io/svantle/docker-minecraft-java/docker-minecraft-java:${version}
-            docker push ghcr.io/svantle/docker-minecraft-java/docker-minecraft-java:latest
+            docker push ghcr.io/svantle/docker-minecraft-java:${version}
+            docker push ghcr.io/svantle/docker-minecraft-java:latest
           done
