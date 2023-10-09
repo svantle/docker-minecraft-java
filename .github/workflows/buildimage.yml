@@ -67,15 +67,15 @@ jobs:
       - name: Build and tag Docker image
         run: |
           for version in "${{ matrix.minecraft_versions }}"; do
-            docker build --build-arg version=${version} -t svantle/minecraft-docker-java:${version} .
-            docker tag svantle/minecraft-docker-java:${version} svantle/minecraft-docker-java:latest
+            docker build --build-arg version=${version} -t svantle/docker-minecraft-java:${version} .
+            docker tag svantle/docker-minecraft-java:${version} svantle/docker-minecraft-java:latest
           done
 
       - name: Push Docker images to Docker Hub and GitHub Packages
         run: |
           for version in "${{ matrix.minecraft_versions }}"; do
-            docker push svantle/minecraft-docker-java:${version}
-            docker push svantle/minecraft-docker-java:latest
-            docker push ghcr.io/svantle/docker-minecraft-java/minecraft-docker-java:${version}
-            docker push ghcr.io/svantle/docker-minecraft-java/minecraft-docker-java:latest
+            docker push svantle/docker-minecraft-java:${version}
+            docker push svantle/docker-minecraft-java:latest
+            docker push ghcr.io/svantle/docker-minecraft-java/docker-minecraft-java:${version}
+            docker push ghcr.io/svantle/docker-minecraft-java/docker-minecraft-java:latest
           done
