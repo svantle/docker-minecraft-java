@@ -82,6 +82,8 @@ jobs:
       - name: Push Docker images to Docker Hub
         run: |
           for version in "${{ matrix.minecraft_versions }}"; do
+            docker images
             docker tag svantle/docker-minecraft-java:${version} gchr.io/svantle/docker-minecraft-java:${version}
+            docker images
             docker push ghcr.io/svantle/docker-minecraft-java:${version}
           done
