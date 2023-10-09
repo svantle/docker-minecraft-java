@@ -64,7 +64,7 @@ jobs:
       - name: Build and tag Docker image
         run: |
           for version in "${{ matrix.minecraft_versions }}"; do
-            docker build -t svantle/minecraft-docker-java:${version} .
+            docker build --build-arg version=${version} -t svantle/minecraft-docker-java:${version} .
             docker tag svantle/minecraft-docker-java:${version} svantle/minecraft-docker-java:latest
           done
 
